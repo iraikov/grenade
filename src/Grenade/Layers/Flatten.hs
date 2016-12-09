@@ -12,6 +12,7 @@ module Grenade.Layers.Flatten (
   ) where
 
 import           Data.Proxy
+import           Data.Serialize
 import           Data.Singletons.TypeLits
 import           GHC.TypeLits
 
@@ -30,6 +31,9 @@ instance UpdateLayer FlattenLayer where
   runUpdate _ _ _ = FlattenLayer
   createRandom = return FlattenLayer
 
+instance Serialize FlattenLayer where
+  put _ = return ()
+  get = return FlattenLayer
 
 instance (KnownNat a, KnownNat x, KnownNat y, a ~ (x * y)) => Layer FlattenLayer ('D2 x y) ('D1 a) where
   runForwards _ (S2D' y)   = S1D' . fromList . toList . flatten . extract $ y

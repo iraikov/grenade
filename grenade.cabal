@@ -16,6 +16,7 @@ library
                      , bytestring                      == 0.10.*
                      , async
                      , either                          == 4.4.*
+                     , cereal
                      , exceptions                      == 0.8.*
                      , hmatrix
                      , MonadRandom
@@ -35,9 +36,9 @@ library
   exposed-modules:
                        Grenade
                        Grenade.Core.Network
-                       Grenade.Core.Vector
                        Grenade.Core.Runner
                        Grenade.Core.Shape
+                       Grenade.Core.Vector
                        Grenade.Layers.Crop
                        Grenade.Layers.Convolution
                        Grenade.Layers.Dropout
@@ -60,6 +61,8 @@ executable             feedforward
     build-depends:     base
                      , grenade
                      , attoparsec
+                     , bytestring
+                     , cereal
                      , either
                      , optparse-applicative            == 0.12.*
                      , text                            == 1.2.*

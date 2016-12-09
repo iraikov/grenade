@@ -16,9 +16,10 @@ library for concise and precise specifications of complex networks in Haskell.
 As an example, a network which can achieve less than 1% error on MNIST can be
 specified and initialised with random weights in a few lines of code with
 ```haskell
-randomMnist :: MonadRandom m
-            => m (Network '[ Convolution 1 10 5 5 1 1, Pooling 2 2 2 2, Relu, Convolution 10 16 5 5 1 1, Pooling 2 2 2 2, FlattenLayer, Relu, FullyConnected 256 80, Logit, FullyConnected 80 10, Logit]
-                          '[ 'D2 28 28, 'D3 24 24 10, 'D3 12 12 10, 'D3 12 12 10, 'D3 8 8 16, 'D3 4 4 16, 'D1 256, 'D1 256, 'D1 80, 'D1 80, 'D1 10, 'D1 10])
+type MNIST = Network '[ Convolution 1 10 5 5 1 1, Pooling 2 2 2 2, Relu, Convolution 10 16 5 5 1 1, Pooling 2 2 2 2, FlattenLayer, Relu, FullyConnected 256 80, Logit, FullyConnected 80 10, Logit]
+                     '[ 'D2 28 28, 'D3 24 24 10, 'D3 12 12 10, 'D3 12 12 10, 'D3 8 8 16, 'D3 4 4 16, 'D1 256, 'D1 256, 'D1 80, 'D1 80, 'D1 10, 'D1 10]
+
+randomMnist :: MonadRandom m => m MNIST
 randomMnist = randomNetwork
 ```
 
@@ -85,7 +86,6 @@ and the tests run using:
 
 Grenade is currently known to build with ghc 7.10 and 8.0.
 
-
 Thanks
 ------
 Writing a library like this has been on my mind for a while now, but a big shout
@@ -104,7 +104,7 @@ Being purely functional, it's probably pretty easy to parallelise and batch up.
 My current examples however are single threaded.
 
 Training 15 generations over Kaggle's 42000 sample MNIST training set took under
-an hour, achieving 0.5% error rate on a 1000 sample holdout set.
+an hour on my laptop, achieving 0.5% error rate on a 1000 sample holdout set.
 
 Contributing
 ------------

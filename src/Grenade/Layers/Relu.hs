@@ -9,6 +9,8 @@ module Grenade.Layers.Relu (
     Relu (..)
   ) where
 
+import           Data.Serialize
+
 import           GHC.TypeLits
 import           Grenade.Core.Vector
 import           Grenade.Core.Network
@@ -26,6 +28,10 @@ instance UpdateLayer Relu where
   type Gradient Relu = ()
   runUpdate _ _ _ = Relu
   createRandom = return Relu
+
+instance Serialize Relu where
+  put _ = return ()
+  get = return Relu
 
 instance ( KnownNat i) => Layer Relu ('D1 i) ('D1 i) where
   runForwards _ (S1D' y) = S1D' (relu y)

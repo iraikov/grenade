@@ -21,6 +21,7 @@ module Grenade.Core.Network (
 
 import           Control.Monad.Random (MonadRandom)
 
+import           Data.Serialize
 
 import           Grenade.Core.Shape
 
@@ -86,3 +87,14 @@ instance Layer x i o => CreatableNetwork (x ': '[]) (i ': o ': '[]) where
 
 instance (Layer x i o, CreatableNetwork xs (o ': r ': rs)) => CreatableNetwork (x ': xs) (i ': o ': r ': rs) where
   randomNetwork = (:~>) <$> createRandom <*> randomNetwork
+
+
+-- | Add very simple serialisation to the network
+instance (Layer x i o, Serialize x) => Serialize (Network '[x] '[i, o]) where
+  put (O x) = put x
+  put _ = error "impossible"
+  get = O <$> get
+
+instance (Layer x i o, Serialize x, Serialize (Network xs (o ': r ': rs))) => Serialize (Network (x ': xs) (i ': o ': r ': rs)) where
+  put (x :~> r) = put x >> put r
+  get = (:~>) <$> get <*> get
